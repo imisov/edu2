@@ -2,92 +2,85 @@
 
 import { showSpinner, hideSpinner } from './ui.js';
 
-const API_URL = 'https://jsonplaceholder.typicode.com';
-
-// Загрузка задач с сервера
-export async function loadTasksFromServer() {
-    try {
-        showSpinner();
-        const response = await fetch(`${API_URL}/users/1/todos`);
-        if (!response.ok) {
-            throw new Error(`Ошибка: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('Произошла ошибка:', error);
-        throw new Error('Ошибка при выполнении запроса \u{1F641} \nНажмите здесь, чтобы попробовать снова');
-    } finally {
-        hideSpinner();
+// Класс-обертка для работы с API
+class ApiClient {
+    constructor(baseURL) {
+        this.baseURL = baseURL;
     }
-}
 
-// Сохранение задачи на сервере
-export async function saveServerTask(task) {
-    try {
-        showSpinner();
-        const response = await fetch(`${API_URL}/todos`, {
+    async request(endpoint, options = {}) {
+        const url = `${this.baseURL}${endpoint}`;
+        try {
+            showSpinner();
+            const response = await fetch(url, options);
+            if (!response.ok) {
+                throw new Error(`Ошибка: ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Произошла ошибка:', error);
+            throw new Error('Ошибка при выполнении запроса \u{1F641} \nНажмите здесь, чтобы попробовать снова');
+        } finally {
+            hideSpinner();
+        }
+    }
+
+    get(endpoint) {
+        return this.request(endpoint);
+    }
+
+    post(endpoint, body) {
+        return this.request(endpoint, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                title: task.title,
-                completed: task.completed,
-                userId: task.userId
-            })
+            body: JSON.stringify(body)
         });
-        if (!response.ok) {
-            throw new Error(`Ошибка: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('Произошла ошибка:', error);
-        throw new Error('Не получилось добавить задачу \u{1F641} \nНажмите здесь, чтобы попробовать снова');
-    } finally {
-        hideSpinner();
     }
-}
 
-// Обновление статуса задачи на сервере
-export async function updateTaskStatus(id, completed) {
-    try {
-        showSpinner();
-        const response = await fetch(`${API_URL}/todos/${id}`, {
+    patch(endpoint, body) {
+        return this.request(endpoint, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                completed: completed,
-            })
+            body: JSON.stringify(body)
         });
-        if (!response.ok) {
-            throw new Error(`Ошибка: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('Произошла ошибка:', error);
-        throw new Error('Не получилось отметить \u{1F641} \nНажмите здесь, чтобы попробовать снова');
-    } finally {
-        hideSpinner();
     }
+
+    delete(endpoint) {
+        return this.request(endpoint, {
+            method: 'DELETE'
+        });
+    }
+}
+
+// Экземпляр класса для работы с API
+const apiClient = new ApiClient('https://jsonplaceholder.typicode.com');
+
+// Загрузка задач с сервера
+export async function loadTasksFromServer() {
+    return apiClient.get('/users/1/todos');
+}
+
+// Сохранение задачи на сервере
+export async function saveServerTask(task) {
+    return apiClient.post('/todos', {
+        title: task.title,
+        completed: task.completed,
+        userId: task.userId
+    });
+}
+
+// Обновление статуса задачи на сервере
+export async function updateTaskStatus(id, completed) {
+    return apiClient.patch(`/todos/${id}`, {
+        completed: completed
+    });
 }
 
 // Удаление задачи на сервере
 export async function deleteServerTask(id) {
-    try {
-        showSpinner();
-        const response = await fetch(`${API_URL}/todos/${id}`, {
-            method: 'DELETE',
-        });
-        if (!response.ok) {
-            throw new Error(`Ошибка: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('Произошла ошибка:', error);
-        throw new Error('Не получилось удалить \u{1F641} \nНажмите здесь, чтобы попробовать снова');
-    } finally {
-        hideSpinner();
-    }
+    return apiClient.delete(`/todos/${id}`);
 }

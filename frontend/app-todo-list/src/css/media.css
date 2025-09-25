@@ -1,0 +1,19 @@
+/* Media Queries */
+@media (max-width: 600px) {
+  body {
+    font-size: 12px;
+  }
+
+  .site-container {
+    width: 95%;
+    padding-top: 20px;
+  }
+
+  .filters-and-sorting {
+    margin-bottom: 10px;
+  }
+
+  .filters {
+    width: 140px;
+  }
+}

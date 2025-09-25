@@ -1,91 +1,107 @@
 // Состояние и бизнес-логика
 
-// Состояние приложения
-let tasks = [];
-let nextId = 1;
-
-// Сохранение задач в localStorage
-export function saveLocalTasks(tasks) {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-}
-
-// Получение задач
-export function getTasks() {
-    return tasks;
-}
-
-// Установка задач
-export function setTasks(newTasks) {
-    tasks = newTasks;
-    nextId = (tasks.length > 0) ? Math.max(...tasks.map(task => task.id), 0) + 1 : 1;
-    saveLocalTasks(tasks);
-}
-
-// Добавление новой задачи
-export function addTask(text, userId = 1) {
-    const newTask = {
-        userId,
-        id: nextId++,
-        title: text,
-        completed: false,
-    };
-
-    tasks.push(newTask);
-    saveLocalTasks(tasks);
-    return newTask;
-}
-
-// Переключение статуса задачи
-export function toggleTask(id) {
-    const targetTask = tasks.find(task => task.id === id);
-    if (targetTask) {
-        targetTask.completed = !targetTask.completed;
-        saveLocalTasks(tasks);
-        return targetTask.completed;
+class Tasks {
+    constructor(tasks) {
+        this.tasks = tasks || [];
+        this.nextId = (this.tasks.length > 0) ? Math.max(...this.tasks.map(task => task.id), 0) + 1 : 1;
     }
-    return null;
-}
 
-// Удаление задачи
-export function deleteTask(id) {
-    tasks = tasks.filter(task => task.id !== id);
-    saveLocalTasks(tasks);
-}
+    // Сохранение задач в localStorage
+    saveLocalTasks() {
+        localStorage.setItem('tasks', JSON.stringify(this.tasks));
+    }
 
-// Фильтрация задач
-export function filterTasks(filterType) {
-    switch (filterType) {
-        case 'active':
-            return tasks.filter(task => !task.completed);
-        case 'completed':
-            return tasks.filter(task => task.completed);
-        default:
-            return tasks;
+    // Получение задач
+    getTasks() {
+        return this.tasks;
+    }
+
+    // Установка задач
+    setTasks(newTasks) {
+        this.tasks = newTasks;
+        this.nextId = (this.tasks.length > 0) ? Math.max(...this.tasks.map(task => task.id), 0) + 1 : 1;
+        this.saveLocalTasks();
+    }
+
+    // Добавление новой задачи
+    addTask(text, userId = 1) {
+        const newTask = {
+            userId,
+            id: this.nextId++,
+            title: text,
+            completed: false,
+        };
+        this.tasks.push(newTask);
+        this.saveLocalTasks();
+        return newTask;
+    }
+
+    // Переключение статуса задачи
+    toggleTask(id) {
+        const targetTask = this.tasks.find(task => task.id === id);
+        if (targetTask) {
+            targetTask.completed = !targetTask.completed;
+            this.saveLocalTasks();
+            return targetTask.completed;
+        }
+        return null;
+    }
+
+    // Удаление задачи
+    deleteTask(id) {
+        this.tasks = this.tasks.filter(task => task.id !== id);
+        this.saveLocalTasks();
+    }
+
+    // Фильтрация задач
+    filterTasks(filterType) {
+        switch (filterType) {
+            case 'active':
+                return this.tasks.filter(task => !task.completed);
+            case 'completed':
+                return this.tasks.filter(task => task.completed);
+            default:
+                return this.tasks;
+        }
+    }
+
+    // Сортировка задач
+    sortTasks(sortingType, sorted = this.tasks) {
+        switch (sortingType) {
+            case 'new-first':
+                return [...sorted].reverse();
+            case 'active-first':
+                return [...sorted].sort((a, b) => Number(a.completed) - Number(b.completed));
+            case 'done-first':
+                return [...sorted].sort((a, b) => Number(b.completed) - Number(a.completed));
+            case 'old-first':
+            default:
+                return sorted;
+        }
+    }
+
+    // Получить задачи с учетом фильтра, поиска и сортировки
+    getVisibleTasks(filterType, searchText, sortingType) {
+        let result = this.filterTasks(filterType);
+        if (searchText && searchText.trim() !== '') {
+            result = result.filter(task =>
+                task.title.toLowerCase().includes(searchText.toLowerCase())
+            );
+        }
+        return this.sortTasks(sortingType, result);
     }
 }
 
-// Сортировка задач
-export function sortTasks(sortingType, sorted = tasks) {
-    switch (sortingType) {
-        case 'new-first':
-            return [...sorted].reverse();
-        case 'active-first':
-            return [...sorted].sort((a, b) => Number(a.completed) - Number(b.completed));
-        case 'done-first':
-            return [...sorted].sort((a, b) => Number(b.completed) - Number(a.completed));
-        case 'old-first':
-        default:
-            return sorted;
-    }
-}
+// Экземпляр для использования во всем приложении
+export const tasksState = new Tasks(JSON.parse(localStorage.getItem('tasks')) || []);
 
-// Получить задачи с учетом фильтра, поиска и сортировки
-export function getVisibleTasks(filterType, searchText, sortingType) {
-    let result = filterTasks(filterType);
-    if (searchText && searchText.trim() !== '') {
-        result = result.filter(task =>
-            task.title.toLowerCase().includes(searchText.toLowerCase())
-        );
-    }
-    return sortTasks(sortingType, result);
-}
+// Прокси-функции для удобного импорта
+export const saveLocalTasks = () => tasksState.saveLocalTasks();
+export const getTasks = () => tasksState.getTasks();
+export const setTasks = (tasks) => tasksState.setTasks(tasks);
+export const addTask = (text, userId = 1) => tasksState.addTask(text, userId);
+export const toggleTask = (id) => tasksState.toggleTask(id);
+export const deleteTask = (id) => tasksState.deleteTask(id);
+export const filterTasks = (filterType) => tasksState.filterTasks(filterType);
+export const sortTasks = (sortingType, sorted) => tasksState.sortTasks(sortingType, sorted);
+export const getVisibleTasks = (filterType, searchText, sortingType) => tasksState.getVisibleTasks(filterType, searchText, sortingType);

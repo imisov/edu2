@@ -1,6 +1,11 @@
 import '../css/normalize.css';
+import '../css/base.css';
 import 'toastify-js/src/toastify.css';
-import '../css/styles.css';
+import '../css/new-task.css';
+import '../css/actions.css';
+import '../css/list.css';
+import '../css/media.css';
+
 import Toastify from 'toastify-js';
 
 import {

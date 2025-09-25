@@ -27,14 +27,16 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './index.html',
-            favicon: './src/img/favicon.png'
+            template: './public/index.html',
+            favicon: './public/favicon.png'
         }),
         ...(isProd ? [new MiniCssExtractPlugin({ filename: '[name].[contenthash].css' })] : [])
     ],
     mode: isProd ? 'production' : 'development',
     devServer: {
-        static: './dist',
+        static: {
+            directory: path.join(__dirname, 'public'),
+        },
         open: true,
         hot: true,
         port: 8080,

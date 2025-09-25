@@ -1,0 +1,155 @@
+/* Tasks Actions */
+.tasks__actions {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding-bottom: 5px;
+  background-color: var(--main-white-color);
+}
+
+.tasks__search,
+.filters-and-sorting,
+.mass-actions {
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Search */
+.tasks__search {
+  position: relative;
+}
+
+.tasks__search-icon {
+  position: absolute;
+  top: 16px;
+  left: 19px;
+}
+
+.tasks__search-input {
+  width: 100%;
+  padding: 10px;
+  padding-left: 40px;
+  border: 2px solid var(--main-color);
+  border-radius: 20px;
+  outline: none;
+  background-color: var(--main-white-color);
+}
+
+.tasks__search-input:focus,
+.tasks__search-input:hover {
+  outline: none;
+  border-color: var(--hover-btn-color);
+}
+
+/* Filters */
+.filters {
+  width: 170px;
+  padding: 7px 10px;
+  outline: none;
+  border: 2px solid var(--main-color);
+  border-radius: 20px;
+  background-color: var(--main-white-color);
+  cursor: pointer;
+}
+
+.filters:focus,
+.filters:hover {
+  outline: none;
+  border-color: var(--hover-btn-color);
+}
+
+/* Sorting */
+.sorting__wrap {
+  position: relative;
+}
+
+.sorting__btn:focus {
+  outline: none;
+  color: var(--hover-btn-color);
+}
+
+.sorting__btn:hover {
+  color: var(--hover-btn-color);
+}
+
+.sorting__btn:active {
+  color: var(--active-btn-color);
+}
+
+.sorting__list-wrap {
+  z-index: 5;
+  position: absolute;
+  right: 0;
+  top: 0;
+  min-width: 250px;
+  max-width: 250px;
+  border-radius: 20px;
+  background-color: var(--main-white-color);
+  transform: translate(0px, 20px);
+  box-shadow: 4px 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+.sorting__list {
+  display: none;
+  padding: 15px 0;
+}
+
+.sorting__list--active {
+  display: block;
+}
+
+.sorting__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  cursor: pointer;
+}
+
+.sorting__item:focus,
+.sorting__item:hover {
+  outline: none;
+  background-color: var(--hover-checkline-color);
+}
+
+/* Mass Actions */
+.mass-actions__btn {
+  padding: 5px 0;
+}
+
+.mass-actions__btn:focus {
+  outline: none;
+  color: var(--hover-btn-color);
+}
+
+.mass-actions__btn:hover {
+  color: var(--hover-btn-color);
+}
+
+.mass-actions__btn:active {
+  color: var(--active-btn-color);
+}
+
+.mass-actions__btn--done {
+  margin-right: 15px;
+}
+
+.mass-actions__select-all,
+.tasks__select {
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.mass-actions__select-all:focus,
+.tasks__select:focus {
+  outline: 2px solid var(--hover-btn-color);
+  outline-offset: 2px;
+}
+
+.mass-actions__select-all:hover,
+.tasks__select:hover {
+  outline: 2px solid var(--hover-btn-color);
+  outline-offset: 2px;
+}

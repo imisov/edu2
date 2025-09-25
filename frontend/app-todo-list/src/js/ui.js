@@ -33,14 +33,30 @@ export function createTaskElement(task, toggleTaskCallback, deleteTaskCallback) 
     taskElement.classList.add('tasks__line');
     taskElement.setAttribute('role', 'listitem');
 
-    // Чекбокс массового выбора
+    // Добавляем чекбокс массового выбора
+    taskElement.appendChild(createSelectCheckbox(task));
+
+    // Добавляем чекбокс статуса задачи и текст задачи
+    taskElement.appendChild(createCheckboxWrap(task, toggleTaskCallback));
+
+    // Добавляем кнопку удаления задачи с иконкой корзины
+    taskElement.appendChild(createDeleteButton(task, deleteTaskCallback));
+
+    taskList.append(taskElement);
+}
+
+// Создание чекбокса массового выбора
+function createSelectCheckbox(task) {
     const selectCheckbox = document.createElement('input');
     selectCheckbox.type = 'checkbox';
     selectCheckbox.name = `task${task.id}`;
     selectCheckbox.classList.add('tasks__select');
-    taskElement.appendChild(selectCheckbox);
 
-    // Чекбокс задачи, текст и кнопка удаления
+    return selectCheckbox;
+}
+
+// Создание чекбокса задачи с текстом
+function createCheckboxWrap(task, toggleTaskCallback) {
     const checkboxWrap = document.createElement('div');
     checkboxWrap.classList.add('tasks__checkbox-wrap');
 
@@ -60,14 +76,23 @@ export function createTaskElement(task, toggleTaskCallback, deleteTaskCallback) 
 
     checkboxWrap.appendChild(markCheckbox);
     checkboxWrap.appendChild(label);
-    taskElement.appendChild(checkboxWrap);
 
+    return checkboxWrap;
+}
+
+// Создание кнопки удаления задачи
+function createDeleteButton(task, deleteTaskCallback) {
     const deleteButton = document.createElement('button');
     deleteButton.classList.add('tasks__btn-del', 'btn-reset');
     deleteButton.ariaLabel = 'Удалить задачу';
     deleteButton.addEventListener('click', () => deleteTaskCallback(task.id));
+    deleteButton.appendChild(createTrashIcon());
 
-    // Иконка корзины
+    return deleteButton;
+}
+
+// Создание иконки корзины
+function createTrashIcon() {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
     svg.setAttribute('height', '24px');
@@ -80,10 +105,8 @@ export function createTaskElement(task, toggleTaskCallback, deleteTaskCallback) 
 
     svg.appendChild(path);
     svg.ariaHidden = 'true';
-    deleteButton.appendChild(svg);
-    taskElement.appendChild(deleteButton);
 
-    taskList.append(taskElement);
+    return svg;
 }
 
 // Проверка наличия задач и отображение сообщения об их отсутствии
