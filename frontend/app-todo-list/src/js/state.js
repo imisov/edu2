@@ -3,7 +3,6 @@
 class Tasks {
     constructor(tasks) {
         this.tasks = tasks || [];
-        this.nextId = (this.tasks.length > 0) ? Math.max(...this.tasks.map(task => task.id), 0) + 1 : 1;
     }
 
     // Сохранение задач в localStorage
@@ -19,7 +18,6 @@ class Tasks {
     // Установка задач
     setTasks(newTasks) {
         this.tasks = newTasks;
-        this.nextId = (this.tasks.length > 0) ? Math.max(...this.tasks.map(task => task.id), 0) + 1 : 1;
         this.saveLocalTasks();
     }
 
@@ -27,7 +25,7 @@ class Tasks {
     addTask(text, userId = 1) {
         const newTask = {
             userId,
-            id: this.nextId++,
+            id: new Date().valueOf(),
             title: text,
             completed: false,
         };
