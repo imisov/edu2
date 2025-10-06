@@ -1,0 +1,143 @@
+/* Global */
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+:root {
+  --main-color: #28283d;
+  --light-main-color: #353550;
+  --check-color: #8bc34a;
+  --btn-color: #fe5416;
+  --hover-btn-color: #f77748;
+  --active-btn-color: #f84504;
+  --checked-text-color: #b7b7b9;
+  --main-white-color: snow;
+  --hover-checkline-color: #feebda;
+  --light-text-color: #fffbeb;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(
+    to bottom right,
+    var(--main-color),
+    var(--light-main-color)
+  );
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 15px;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+.list-reset {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.btn-reset {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.site-container {
+  width: 75%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding-top: 30px;
+}
+
+/* Header */
+.header,
+.main {
+  margin-bottom: 30px;
+}
+
+.header__title,
+.header__desc {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--light-text-color);
+}
+
+.header__title {
+  margin-bottom: 10px;
+}
+
+/* Tasks Section */
+.tasks {
+  position: relative;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: var(--main-white-color);
+  box-shadow: 4px 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+.tasks__title {
+  margin-bottom: 15px;
+  padding-left: 5px;
+  color: var(--main-color);
+}
+
+.tasks__spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(128, 128, 128, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.tasks__spinner-icon {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  border: 6px solid var(--main-white-color);
+  border-top: 6px solid var(--main-color);
+  border-radius: 50%;
+  animation: tasks__spinner-spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes tasks__spinner-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

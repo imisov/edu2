@@ -1,0 +1,105 @@
+/* Task List */
+.tasks__line {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 7px 5px;
+}
+
+.tasks__line:hover {
+  border-radius: 10px;
+  background: var(--hover-checkline-color);
+}
+
+.tasks__checkbox-wrap {
+  padding-right: 30px;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+}
+
+.tasks__mark {
+  appearance: none;
+  position: relative;
+  min-width: 30px;
+  min-height: 30px;
+  border: 1px solid var(--main-color);
+  border-radius: 50%;
+  background-color: var(--main-white-color);
+  cursor: pointer;
+}
+
+.tasks__mark::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  border-radius: 50%;
+  background-color: var(--check-color);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='30' viewBox='0 -960 960 960' width='30' stroke='%23FFFFFF' stroke-width='30' fill='%23FFFFFF'%3E%3Cpath d='M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z'/%3E%3C/svg%3E");
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.tasks__mark:focus {
+  outline: none;
+  border-color: var(--hover-btn-color);
+}
+
+.tasks__mark:hover {
+  border-color: var(--hover-btn-color);
+}
+
+.tasks__mark:checked::after {
+  top: -2px;
+  left: -2px;
+  width: 32px;
+  height: 32px;
+}
+
+.tasks__mark:checked + .tasks__text {
+  text-decoration: line-through;
+  color: var(--checked-text-color);
+}
+
+.tasks__mark:checked:focus,
+.tasks__mark:checked:hover {
+  outline: 1px solid var(--check-color);
+  outline-offset: 1px;
+}
+
+.tasks__text {
+  padding-left: 10px;
+  color: var(--main-color);
+  cursor: pointer;
+}
+
+.tasks__btn-del {
+  order: 999;
+  margin-left: auto;
+  width: 30px;
+  height: 30px;
+  padding: 3px;
+}
+
+.tasks__btn-del:focus {
+  outline: none;
+}
+
+.tasks__btn-del:focus svg {
+  fill: var(--hover-btn-color);
+}
+
+.tasks__btn-del:hover svg {
+  fill: var(--btn-color);
+}
+
+.tasks__btn-del:active svg {
+  fill: var(--main-color);
+}
+
+.tasks__null {
+  text-align: center;
+  padding: 50px;
+}

@@ -1,0 +1,50 @@
+/* New Task Section */
+.new-task {
+  margin-bottom: 20px;
+}
+
+.new-task__form {
+  position: relative;
+  border-radius: 20px;
+  box-shadow: 4px 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+.new-task__input {
+  width: 100%;
+  padding: 10px 20px;
+  padding-right: 135px;
+  border: none;
+  border-radius: 15px;
+  color: var(--main-color);
+  background-color: var(--main-white-color);
+}
+
+.new-task__input:focus,
+.new-task__input:hover {
+  outline: 2px solid var(--hover-btn-color);
+  outline-offset: -1px;
+}
+
+.new-task__btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  border-radius: 13px;
+  padding: 10px 20px;
+  background-color: var(--btn-color);
+  color: var(--main-white-color);
+}
+
+.new-task__btn:focus {
+  outline: none;
+  background-color: var(--hover-btn-color);
+}
+
+.new-task__btn:hover {
+  background-color: var(--hover-btn-color);
+}
+
+.new-task__btn:active {
+  background-color: var(--active-btn-color);
+}
